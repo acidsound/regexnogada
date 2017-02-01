@@ -1,0 +1,13 @@
+# default field delimiter : tab
+(?im)<script[^>]*>[\s\S]*?</script>
+(?im)<noscript[^>]*>[\s\S]*?</noscript>
+(?im)<!--[\s\S]*?-->
+(?im)<style[^>]*>[\s\S]*?</style>
+(?im)<html[^>]*>
+(?im)<head>[\s\S]*?</head>
+(?im)<article[^>]*>([\s\S]*?)</article> $1
+(?im)(<(head|iframe|body|section|meta|title)[^>]*>) \n$1
+(?im)(<(div|li|ul|h1|h2|h3|h4|p|img)[^>]*>) \n  $1
+(?im)(<section[^>]*>)   \n$1
+(?im)<li value="[\d]*" [^>]*>  <li class="list">
+(?im)<section class="slide-content" [^>]*>  <section class="slides">`
