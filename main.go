@@ -37,11 +37,14 @@ func convertRegEx(file *os.File, str string) string {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
-		if line[0] != 35 {
+		switch {
+		case len(strings.TrimSpace(line)) < 3: break // skip empty line (rules)
+		case line[0] == 35: break // skip comment line with # at first
+		default: // process RE2 rule
 			tokens := strings.Split(line, "\t")
 			replacement := ""
 			if len(tokens) > 1 {
-				/* \n, \b 같은 escape 문자들 변환 : https://play.golang.org/p/AZ82pxX64b */
+				/* convert escape chracters like \n, \b https://play.golang.org/p/AZ82pxX64b */
 				replacement, _ = strconv.Unquote(`"` + tokens[1] + `"`)
 			}
 			str = regReplacer(str, tokens[0], replacement)
