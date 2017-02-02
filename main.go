@@ -26,13 +26,12 @@ func main() {
 		line := scanner.Text()
 		if line[0] != 35 {
 			tokens := strings.Split(line, "\t")
+			replacement := ""
 			if len(tokens)>1 {
 				/* \n, \b 같은 escape 문자들 변환 : https://play.golang.org/p/AZ82pxX64b */
-				t, _ := strconv.Unquote(`"`+tokens[1]+`"`)
-				str = regReplacer(str, tokens[0], t)
-			} else {
-				str = regReplacer(str, tokens[0], "")
+				replacement, _ = strconv.Unquote(`"`+tokens[1]+`"`)
 			}
+			str = regReplacer(str, tokens[0], replacement)
 		}
 	}
 	fmt.Println(str)
