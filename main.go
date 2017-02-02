@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"strings"
 	"fmt"
+	"strconv"
 )
 
 func main() {
@@ -26,8 +27,9 @@ func main() {
 		if line[0] != 35 {
 			tokens := strings.Split(line, "\t")
 			if len(tokens)>1 {
-				/* file 에서 읽은 \n 을 newline으로 대체 */
-				str = regReplacer(str, tokens[0], strings.Replace(tokens[1], "\\n", "\n", -1 ))
+				/* \n, \b 같은 escape 문자들 변환 : https://play.golang.org/p/AZ82pxX64b */
+				t, _ := strconv.Unquote(`"`+tokens[1]+`"`)
+				str = regReplacer(str, tokens[0], t)
 			} else {
 				str = regReplacer(str, tokens[0], "")
 			}
