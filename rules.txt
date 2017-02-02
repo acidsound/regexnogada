@@ -1,13 +1,39 @@
-# default field delimiter : tab
+#default RE2 field delimiter is tab. line starts with sharp(hash) is for comment.
+
+#This RE2 rule file is for converting slide html file saved from google doc slide.
+#Input html source will be converted to simple section contents.
+
+#Delete all script parts and html-comments
 (?im)<script[^>]*>[\s\S]*?</script>
 (?im)<noscript[^>]*>[\s\S]*?</noscript>
 (?im)<!--[\s\S]*?-->
+(?im)<!DOCTYPE[\s\S]*?>
+             
+#Delete all style blocks
 (?im)<style[^>]*>[\s\S]*?</style>
-(?im)<html[^>]*>
+	 	 	 	 	 	 
+#Delete head block
 (?im)<head>[\s\S]*?</head>
-(?im)<article[^>]*>([\s\S]*?)</article>	$1
-(?im)(<(head|iframe|body|section|meta|title)[^>]*>)	\n$1
+							
+#Delete some tags
+(?im)<\/?(?:html|body|meta|iframe|article)(?:.|\n)*?>
+    				    				
+#Add newlines to some big tags, and indentations.
+(?im)(<(section|title)[^>]*>)	\n$1
 (?im)(<(div|li|ul|h1|h2|h3|h4|p|img)[^>]*>)	\n  $1
+(?im)(<(p|img)[^>]*>)	$1\n    
+
+#Add double new line to separate each section blocks
 (?im)(<section[^>]*>)	\n$1
-(?im)<li value="[\d]*" [^>]*>	<li class="list">
-(?im)<section class="slide-content" [^>]*>	<section class="slides">`
+
+#Convert some complex tags to simple tags with classes
+(?im)<li value="[\d]*" [^>]*>	<li class=\"list\">
+(?im)<section class="slide-content" [^>]*>	<section class=\"slides\">
+
+#Delete complex styles in tags
+(?im)font-style:normal;
+(?im)text-decoration:none;
+(?im)background-color:inherit;
+(?im)font-family:Arial;
+(?im)font-variant:normal;
+(?im)direction:ltr;
