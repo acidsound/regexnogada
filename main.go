@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"bufio"
 	"strings"
+	"fmt"
 )
 
 func main() {
@@ -32,7 +33,7 @@ func main() {
 			}
 		}
 	}
-	println(str)
+	fmt.Println(str)
 }
 func showUsage() {
 	println(`
