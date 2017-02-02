@@ -34,12 +34,23 @@ func main() {
 			str = regReplacer(str, tokens[0], replacement)
 		}
 	}
-	fmt.Println(str)
+	if len(os.Args)>3 {
+		check(saveResult(os.Args[3], str))
+	} else {
+		fmt.Println(str)
+	}
+}
+func saveResult(fileName string, result string) error {
+	return ioutil.WriteFile(fileName, []byte(result), 0644)
 }
 func showUsage() {
 	println(`
-Usage: regexnogada <source file> <rule file>
-	`)
+Usage: regexnogada [source file] [rule file]
+  or
+  regexnogada [source file] [rule file] [target file]
+
+If called without a target file, 'regexnogada' will run a rule file at the terminal.
+`)
 }
 func regReplacer(source string, regex string, replacement string) string {
 	return regexp.MustCompile(regex).ReplaceAllString(source, replacement)
