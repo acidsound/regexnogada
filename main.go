@@ -15,30 +15,39 @@ func main() {
 		showUsage()
 		return
 	}
+	/* load source file */
 	src := getSource(os.Args[1])
 	str := src
+	/* open rule file */
 	file, err := os.Open(os.Args[2])
 	check(err)
 	defer file.Close()
 
+	/* convert */
+	result := convertRegEx(file, str)
+
+	/* output */
+	if len(os.Args) > 3 {
+		check(saveResult(os.Args[3], result))
+	} else {
+		fmt.Println(result)
+	}
+}
+func convertRegEx(file *os.File, str string) string {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line[0] != 35 {
 			tokens := strings.Split(line, "\t")
 			replacement := ""
-			if len(tokens)>1 {
+			if len(tokens) > 1 {
 				/* \n, \b 같은 escape 문자들 변환 : https://play.golang.org/p/AZ82pxX64b */
-				replacement, _ = strconv.Unquote(`"`+tokens[1]+`"`)
+				replacement, _ = strconv.Unquote(`"` + tokens[1] + `"`)
 			}
 			str = regReplacer(str, tokens[0], replacement)
 		}
 	}
-	if len(os.Args)>3 {
-		check(saveResult(os.Args[3], str))
-	} else {
-		fmt.Println(str)
-	}
+	return str
 }
 func saveResult(fileName string, result string) error {
 	return ioutil.WriteFile(fileName, []byte(result), 0644)
