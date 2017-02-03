@@ -1,7 +1,7 @@
-# regexnogada
+# RegExNogada
 Multiple regular expression engaging tool
 
-# concept
+# Concept
 This tool deals with source text file and rules text file, and returns 1 text output.
 Each lines in rules file will be engaged to source text in sequence.
 Result text will be on output.
