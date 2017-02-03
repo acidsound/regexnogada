@@ -1,16 +1,15 @@
 #default RE2 field delimiter is tab. line starts with sharp(hash) is for comment.
 
-#This RE2 rule file is for converting slide html file saved from google doc slide.
-#Input html source will be converted to simple section contents.
+## This example rules will make complexed loaf of HTML to be simple HTML.
+## HTML file saved from "Google doc presentation slide HTML view" is very complex.
+## This rules will extract simple contents part easily, from first <section> and last.
 
-#Delete all script parts and html-comments
+#Delete all script blocks, style blocks and html-comments
 (?im)<script[^>]*>[\s\S]*?</script>
 (?im)<noscript[^>]*>[\s\S]*?</noscript>
+(?im)<style[^>]*>[\s\S]*?</style>
 (?im)<!--[\s\S]*?-->
 (?im)<!DOCTYPE[\s\S]*?>
-             
-#Delete all style blocks
-(?im)<style[^>]*>[\s\S]*?</style>
 	 	 	 	 	 	 
 #Delete head block
 (?im)<head>[\s\S]*?</head>
@@ -30,10 +29,19 @@
 (?im)<li value="[\d]*" [^>]*>	<li class=\"list\">
 (?im)<section class="slide-content" [^>]*>	<section class=\"slides\">
 
-#Delete complex styles in tags
+#Delete complex things
 (?im)font-style:normal;
 (?im)text-decoration:none;
 (?im)background-color:inherit;
 (?im)font-family:Arial;
 (?im)font-variant:normal;
 (?im)direction:ltr;
+(?im)<div id=\"recoil-timer-page-complete\"></div>
+
+#Delete empty blanks lines
+(^\s*)
+
+#Tmpt Resources
+#(?im)(^.*)	'$1\\n' +
+#(?im)([\s\S]*)	lectureArray.push(\n$1
+#(?im)([\s\S]*)	$1\n'');
